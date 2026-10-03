@@ -39,6 +39,7 @@ public class SlimePowerListener implements Listener {
             player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
         }
     }
+Bukkit.getPluginManager().getPlugin("powerboundSMP")
 
     @EventHandler
     public void onSlimeKeyBind(PlayerSwapHandItemsEvent event) {
