@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group = 'beta.teneitri'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://papermc.io' }
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    archiveFileName = 'powerboundSMP-1.0.jar'
+}
