@@ -10,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -19,33 +18,22 @@ import java.util.UUID;
 
 public class SlimePowerListener implements Listener {
     private final HashMap<UUID, Long> slimeCooldowns = new HashMap<>();
-    private final long COOLDOWN_TIME = 10000;
-
-    public SlimePowerListener(Plugin plugin) {
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player.getScoreboardTags().contains("slime")) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
-                }
-            }
-        }, 0L, 40L);
-    }
+    private final long COOLDOWN_TIME = 10000; // 10 seconds
 
     @EventHandler
     public void onSlimeJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.getScoreboardTags().contains("slime")) {
-            // FIXED: Corrected PotionEffectType to PotionEffect here!
             player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
         }
     }
-Bukkit.getPluginManager().getPlugin("powerboundSMP")
 
     @EventHandler
     public void onSlimeKeyBind(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
         if (!player.getScoreboardTags().contains("slime")) return;
         event.setCancelled(true);
+        
         long currentTime = System.currentTimeMillis();
         if (slimeCooldowns.containsKey(player.getUniqueId())) {
             long timeLeft = slimeCooldowns.get(player.getUniqueId()) - currentTime;
@@ -55,13 +43,15 @@ Bukkit.getPluginManager().getPlugin("powerboundSMP")
                 return;
             }
         }
+        
         player.setVelocity(new Vector(player.getVelocity().getX(), 0.8, player.getVelocity().getZ()));
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_SLIME_JUMP, 1.5f, 1.0f);
         player.getWorld().spawnParticle(Particle.SLIME, player.getLocation().add(0, 0.5, 0), 20, 0.3, 0.3, 0.3, 0.1);
+        
         for (Entity entity : player.getNearbyEntities(6.0, 6.0, 6.0)) {
             if (entity instanceof Player && !entity.equals(player)) {
-                Player target = (Player) entity;player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
-
+                Player target = (Player) entity;
+                target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 80, 2, false, false, true));
                 target.getWorld().spawnParticle(Particle.SLIME, target.getLocation().add(0, 1, 0), 15, 0.2, 0.4, 0.2, 0.05);
                 target.sendMessage(ChatColor.GREEN + "🤢 You were slimed!");
                 player.sendMessage(ChatColor.GREEN + "🟢 Slimed " + target.getName() + "!");
