@@ -61,7 +61,7 @@ public class FireFighterPowerListener implements Listener {
         int radius = 6;
         org.bukkit.Location origin = player.getLocation();
 
-        for (int x = -radius; x  0 z 0 y 0 ) {
+        for (int x = -radius; x  0, z 0, y 0 ) {
                     living.setFireTicks(0);
                 }
                 String typeName = entity.getType().name();
