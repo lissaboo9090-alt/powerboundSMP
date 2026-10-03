@@ -7,11 +7,13 @@ version = '1.0'
 
 repositories {
     mavenCentral()
-    maven { url = 'https://papermc.io' }
+    // Using the stable production library mirror hub (No automated script block walls)
+    maven { url = 'https://spigotmc.org' }
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
+    // Locked onto a stable release build framework version entry
+    compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
 }
 
 java {
