@@ -1,0 +1,94 @@
+package beta.teneitri.powerboundSMP;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
+
+import java.util.HashMap;
+import java.util.UUID;
+
+public class SlimePowerListener implements Listener {
+
+    private final HashMap<UUID, Long> slimeCooldowns = new HashMap<>();
+    private final long COOLDOWN_TIME = 10000; 
+
+    public SlimePowerListener(Plugin plugin) {
+        Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.getScoreboardTags().contains("slime")) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
+                }
+            }
+        }, 0L, 40L);
+    }
+
+    @EventHandler
+    public void onSlimeJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        if (player.getScoreboardTags().contains("slime")) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
+        }
+    }
+
+    @EventHandler
+    public void onSlimeKeyBind(PlayerSwapHandItemsEvent event) {
+        Player player = event.getPlayer();
+
+        if (!player.getScoreboardTags().contains("slime")) return;
+        event.setCancelled(true);
+
+        long currentTime = System.currentTimeMillis();
+        if (slimeCooldowns.containsKey(player.getUniqueId())) {
+            long timeLeft = slimeCooldowns.get(player.getUniqueId()) - currentTime;
+            if (timeLeft > 0) {
+                double secondsLeft = Math.round((timeLeft / 1000.0) * 10) / 10.0;
+                player.sendMessage(ChatColor.GREEN + "Slime reserves recharging! Wait " + secondsLeft + "s");
+                return;
+            }
+        }
+
+        player.setVelocity(new Vector(player.getVelocity().getX(), 0.8, player.getVelocity().getZ()));
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_SLIME_JUMP, 1.5f, 1.0f);
+        player.getWorld().spawnParticle(Particle.SLIME, player.getLocation().add(0, 0.5, 0), 20, 0.3, 0.3, 0.3, 0.1);
+
+        for (Entity entity : player.getNearbyEntities(6.0, 6.0, 6.0)) {
+            if (entity instanceof Player && !entity.equals(player)) {
+                Player target = (Player) entity;
+                target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 80, 2, false, false, true));
+                target.getWorld().spawnParticle(Particle.SLIME, target.getLocation().add(0, 1, 0), 15, 0.2, 0.4, 0.2, 0.05);
+                target.sendMessage(ChatColor.GREEN + "You were trapped in sticky slime by a Slime role!");
+                player.sendMessage(ChatColor.GREEN + " SLIME BOUNCE: Launched yourself and slowed " + target.getName() + "!");
+                break;
+            }
+        }
+
+        slimeCooldowns.put(player.getUniqueId(), currentTime + COOLDOWN_TIME);
+    }
+}
+EOF
+
+# 3. Update the main brain file to swap FireFighter for Slime
+sed -i 's/new FireFighterPowerListener()/new SlimePowerListener(this)/g' src/main/java/beta/teneitri/powerboundSMP/powerboundSMP.java
+
+# 4. Update command files to switch "fire fighter" to "slime"
+sed -i 's/"fire fighter"/"slime"/g' src/main/java/beta/teneitri/powerboundSMP/RandomizeCommand.java
+sed -i 's/"fire fighter"/"slime"/g' src/main/java/beta/teneitri/powerboundSMP/JoinMatchCommand.java
+
+# 5. Clear old build remnants and force compile the fresh setup
+rm -rf build sources.txt
+mkdir -p build/classes build/libs
+find src/ -name "*.java" > sources.txt
+javac -cp "lib/spigot-api.jar" -d build/classes @sources.txt
+cp src/main/resources/plugin.yml build/classes/ 2>/dev/null || find . -name "plugin.yml" -exec cp {} build/classes/ \;
+jar cvf build/libs/powerboundSMP-1.0.jar -C build/classes .
