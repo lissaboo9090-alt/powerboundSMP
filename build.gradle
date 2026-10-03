@@ -1,3 +1,4 @@
+cat << 'EOF' > build.gradle
 plugins {
     id 'java'
 }
@@ -7,13 +8,12 @@ version = '1.0'
 
 repositories {
     mavenCentral()
-    // Using the stable production library mirror hub (No automated script block walls)
+    maven { url = 'https://papermc.io' }
     maven { url = 'https://spigotmc.org' }
 }
 
 dependencies {
-    // Locked onto a stable release build framework version entry
-    compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
 }
 
 java {
@@ -27,3 +27,4 @@ tasks.withType(JavaCompile).configureEach {
 jar {
     archiveFileName = 'powerboundSMP-1.0.jar'
 }
+EOF
