@@ -25,7 +25,7 @@ public final class powerboundSMP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DashPowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new DreamerPowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new FadeOutPowerListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new FireFighterPowerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new SlimePowerListener(this), this);
         Bukkit.getPluginManager().registerEvents(new FrostPowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new GravityPowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new LightPowerListener(this), this);
