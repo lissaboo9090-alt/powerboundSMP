@@ -15,15 +15,16 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.UUID;
+    public SlimePowerListener(Plugin plugin) {
+        Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.getScoreboardTags().contains("slime")) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
+                }
+            }
+        }, 0L, 40L);
+    }
 
-public class SlimePowerListener implements Listener {
-    private final HashMap<UUID, Long> slimeCooldowns = new HashMap<>();
-    private final long COOLDOWN_TIME = 10000; // 10 seconds
-
-    @EventHandler
-    public void onSlimeJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        if (player.getScoreboardTags().contains("slime")) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
         }
     }
