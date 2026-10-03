@@ -19,6 +19,7 @@ jobs:
         java-version: '25'
         distribution: 'temurin'
 
+    # FIXED: Added the clean command and --no-build-cache tag to force a 100% brand new download pass!
     - name: Compile and Bundle Master Jar File
       run: gradle clean jar --no-build-cache
 
