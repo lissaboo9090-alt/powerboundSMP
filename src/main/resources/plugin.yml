@@ -1,0 +1,9 @@
+name: powerboundSMP
+version: 1.0
+api-version: '1.21'
+main: beta.teneitri.powerboundSMP.powerboundSMP
+commands:
+  randomize:
+    description: Shuffle character tags randomly!
+  joinmatch:
+    description: Join the active match registry.
