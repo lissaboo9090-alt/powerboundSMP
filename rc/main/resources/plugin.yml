@@ -1,0 +1,11 @@
+name: powerboundSMP
+version: 1.0
+main: beta.teneitri.powerboundSMP.powerboundSMP
+api-version: '1.21'
+commands:
+  randomize:
+    description: Shuffles and secretly distributes unique character tags to active players.
+    usage: /randomize
+  joinmatch:
+    description: Allows late-joining users to quietly claim an unassigned role from the pool.
+    usage: /joinmatch
