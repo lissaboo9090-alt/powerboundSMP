@@ -15,8 +15,9 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.UUID;
-    public SlimePowerListener(Plugin plugin) {
-        Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+
+    public SlimePowerListener() {
+        Bukkit.getScheduler().runTaskTimer(Bukkit.getPluginManager().getPlugin("powerboundSMP"), () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.getScoreboardTags().contains("slime")) {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
@@ -24,6 +25,7 @@ import java.util.UUID;
             }
         }, 0L, 40L);
     }
+
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
         }
