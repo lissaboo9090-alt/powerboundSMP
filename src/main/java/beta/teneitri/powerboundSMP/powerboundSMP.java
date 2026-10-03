@@ -40,7 +40,9 @@ public final class powerboundSMP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new TeleportPowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new TimePowerListener(this), this);
         Bukkit.getPluginManager().registerEvents(new VoidPowerListener(), this);
-        Bukkit.getPluginManager().registerEvents(new WitchPowerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new WitchPowerListener(), this);      
+        Bukkit.getPluginManager().registerEvents(new ParrotPowerListener(), this);
+
     }
 
     @Override
