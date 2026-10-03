@@ -15,7 +15,7 @@ public class JoinMatchCommand implements CommandExecutor {
 
     private final String[] ROLES = {
         "archer", "beautiful stranger", "cheesecake", "chronos", "chiwawa", "dash", 
-        "dreamer", "fade out", "fire fighter", "frost", "gravity", "light", 
+        "dreamer", "fade out", "slime", "frost", "gravity", "light", 
         "lighting", "lock pot", "miner", "phoenix", "ragdoll", "shadow", 
         "tank", "telepathy", "teleport", "time", "void", "witch", "parrot"
     };
