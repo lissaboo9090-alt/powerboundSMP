@@ -1,5 +1,5 @@
-cat << 'EOF' > src/main/java/beta/teneitri/powerboundSMP/SlimePowerListener.java
 package beta.teneitri.powerboundSMP;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Particle;
@@ -16,9 +16,11 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.UUID;
+
 public class SlimePowerListener implements Listener {
     private final HashMap<UUID, Long> slimeCooldowns = new HashMap<>();
-    private final long COOLDOWN_TIME = 10000;
+    private final long COOLDOWN_TIME = 10000; // 10 seconds
+
     public SlimePowerListener(Plugin plugin) {
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -28,18 +30,22 @@ public class SlimePowerListener implements Listener {
             }
         }, 0L, 40L);
     }
+
     @EventHandler
     public void onSlimeJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.getScoreboardTags().contains("slime")) {
-            player.addPotionEffect(new PotionEffectType(8, 60, 1, false, false, true));
+            // FIXED: Corrected the PotionEffect instantiation parameters cleanly!
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
         }
     }
+
     @EventHandler
     public void onSlimeKeyBind(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
         if (!player.getScoreboardTags().contains("slime")) return;
         event.setCancelled(true);
+        
         long currentTime = System.currentTimeMillis();
         if (slimeCooldowns.containsKey(player.getUniqueId())) {
             long timeLeft = slimeCooldowns.get(player.getUniqueId()) - currentTime;
@@ -49,9 +55,11 @@ public class SlimePowerListener implements Listener {
                 return;
             }
         }
+        
         player.setVelocity(new Vector(player.getVelocity().getX(), 0.8, player.getVelocity().getZ()));
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_SLIME_JUMP, 1.5f, 1.0f);
         player.getWorld().spawnParticle(Particle.SLIME, player.getLocation().add(0, 0.5, 0), 20, 0.3, 0.3, 0.3, 0.1);
+        
         for (Entity entity : player.getNearbyEntities(6.0, 6.0, 6.0)) {
             if (entity instanceof Player && !entity.equals(player)) {
                 Player target = (Player) entity;
@@ -65,11 +73,3 @@ public class SlimePowerListener implements Listener {
         slimeCooldowns.put(player.getUniqueId(), currentTime + COOLDOWN_TIME);
     }
 }
-EOF
-
-rm -rf build sources.txt
-mkdir -p build/classes build/libs
-find src/ -name "*.java" > sources.txt
-javac -cp "lib/spigot-api.jar" -d build/classes @sources.txt
-cp src/main/resources/plugin.yml build/classes/ 2>/dev/null || find . -name "plugin.yml" -exec cp {} build/classes/ \;
-jar cvf build/libs/powerboundSMP-1.0.jar -C build/classes .
