@@ -59,8 +59,8 @@ public class SlimePowerListener implements Listener {
         player.getWorld().spawnParticle(Particle.SLIME, player.getLocation().add(0, 0.5, 0), 20, 0.3, 0.3, 0.3, 0.1);
         for (Entity entity : player.getNearbyEntities(6.0, 6.0, 6.0)) {
             if (entity instanceof Player && !entity.equals(player)) {
-                Player target = (Player) entity;
-                target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 80, 2, false, false, true));
+                Player target = (Player) entity;player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60, 1, false, false, true));
+
                 target.getWorld().spawnParticle(Particle.SLIME, target.getLocation().add(0, 1, 0), 15, 0.2, 0.4, 0.2, 0.05);
                 target.sendMessage(ChatColor.GREEN + "🤢 You were slimed!");
                 player.sendMessage(ChatColor.GREEN + "🟢 Slimed " + target.getName() + "!");
