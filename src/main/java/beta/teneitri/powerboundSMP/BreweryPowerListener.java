@@ -16,14 +16,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
-public class ChronosPowerListener implements Listener {
+public class BreweryPowerListener implements Listener {
 
     private final HashMap<UUID, Long> freezeCooldowns = new HashMap<>();
     private final HashSet<UUID> trappedPlayers = new HashSet<>();
     private final long COOLDOWN_TIME = 25000;
 
     @EventHandler
-    public void onChronosKeyBind(PlayerSwapHandItemsEvent event) {
+    public void onBreweryKeyBind(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
 
         if (!player.getScoreboardTags().contains("chronos")) return;
@@ -34,7 +34,7 @@ public class ChronosPowerListener implements Listener {
             long timeLeft = freezeCooldowns.get(player.getUniqueId()) - currentTime;
             if (timeLeft > 0) {
                 double secondsLeft = Math.round((timeLeft / 1000.0) * 10) / 10.0;
-                player.sendMessage(ChatColor.GOLD + "time is on cooldown! Wait " + secondsLeft + "s");
+                player.sendMessage(ChatColor.GOLD + "power is on cooldown! Wait " + secondsLeft + "s");
                 return;
             }
         }
@@ -50,24 +50,24 @@ public class ChronosPowerListener implements Listener {
                 frozeAnyone = true;
 
                 trappedPlayers.add(targetUUID);
-                target.sendMessage(ChatColor.RED + "Time has been frozen around you! You are locked for 3 seconds!");
+                target.sendMessage(ChatColor.RED + "You are locked for 3 seconds potions will also not work within thia time!");
                 target.getWorld().spawnParticle(Particle.SPELL_INSTANT, target.getLocation().add(0, 1, 0), 20, 0.2, 0.4, 0.2, 0);
 
                 Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("powerboundSMP"), () -> {
                     trappedPlayers.remove(targetUUID);
                     if (target.isOnline()) {
-                        target.sendMessage(ChatColor.GREEN + " Time resumes flowing for you.");
+                        target.sendMessage(ChatColor.GREEN + " SOME AURAFUL SHIT.");
                     }
                 }, 60L); 
             }
         }
 
         if (frozeAnyone) {
-            player.sendMessage(ChatColor.GOLD + "TIME LOCK: You froze the timeline for nearby players!");
+            player.sendMessage(ChatColor.GOLD + "POTIONS: You froze the nearby players!");
             player.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, player.getLocation(), 45, 0.5, 0.5, 0.5, 0.1);
             freezeCooldowns.put(player.getUniqueId(), currentTime + COOLDOWN_TIME);
         } else {
-            player.sendMessage(ChatColor.GRAY + "Timeline focused, but no nearby players were caught in the ripple.");
+            player.sendMessage(ChatColor.GRAY + "you missed loser, everyone point and laugh");
         }
     }
 
