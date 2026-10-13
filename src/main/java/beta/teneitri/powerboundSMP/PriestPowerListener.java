@@ -9,10 +9,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
-
-import java.util.UUID;
 
 public class PriestPowerListener implements Listener {
 
@@ -22,6 +21,28 @@ public class PriestPowerListener implements Listener {
         if (player.getScoreboardTags().contains("priest")) {
             if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH) != null) {
                 player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(4.0);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onVampireBitePriest(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player)) return;
+        Player priest = (Player) event.getEntity();
+
+        if (!priest.getScoreboardTags().contains("priest")) return;
+
+        if (event.getDamager() instanceof Player) {
+            Player vampire = (Player) event.getDamager();
+            if (vampire.getScoreboardTags().contains("vampire")) {
+
+                event.setCancelled(true);
+
+                priest.getWorld().playSound(priest.getLocation(), Sound.BLOCK_ANVIL_PLACE, 0.5f, 1.5f);
+                priest.getWorld().spawnParticle(Particle.INSTANT_EFFECT, priest.getLocation().add(0, 1, 0), 15, 0.2, 0.2, 0.2, 0.1);
+
+                priest.sendMessage(ChatColor.GOLD + " HOLY BARRIER: You are immune to the Vampire's unholy bite!");
+                vampire.sendMessage(ChatColor.GRAY + " Your fangs cannot pierce the skin of a holy Priest!");
             }
         }
     }
@@ -49,7 +70,7 @@ public class PriestPowerListener implements Listener {
             }
         }
 
-        if (vampireTarget != null) { 
+        if (vampireTarget != null) {
             double currentVampireHealth = vampireTarget.getHealth();
             vampireTarget.setHealth(Math.max(1.0, currentVampireHealth - 4.0));
 
@@ -65,8 +86,8 @@ public class PriestPowerListener implements Listener {
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 if (!onlinePlayer.getScoreboardTags().contains("vampire") && !onlinePlayer.equals(player)) {
                     double dist = vampireTarget.getLocation().distance(onlinePlayer.getLocation());
-                    if (dist < closestVictimDist && dist <= 25.0) { 
-by closestVictimDist = dist;
+                    if (dist < closestVictimDist && dist <= 25.0) {   
+                        closestVictimDist = dist;
                         victim = onlinePlayer;
                     }
                 }
