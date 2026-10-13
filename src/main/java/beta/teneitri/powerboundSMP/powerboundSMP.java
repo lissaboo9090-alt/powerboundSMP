@@ -44,6 +44,7 @@ public final class powerboundSMP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ParrotPowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new LifeLinePowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new OmnipresencePowerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ReturnByDeathPowerListener(), this);
         
     }
 
