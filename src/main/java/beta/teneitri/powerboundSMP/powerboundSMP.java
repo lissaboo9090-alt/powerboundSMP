@@ -49,6 +49,8 @@ public final class powerboundSMP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new AcePowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new PoseidonPowerListener(), this); 
         Bukkit.getPluginManager().registerEvents(new GuardianAngelPowerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ServerProgressionManager(), this);
+ 
 
         
     }
