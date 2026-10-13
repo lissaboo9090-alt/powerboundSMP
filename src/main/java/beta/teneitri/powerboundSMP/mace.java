@@ -21,9 +21,9 @@ public class mace {
             " C "
         );
 
-        recipe.setIngredient('N', Material.NETHERITE_INGOT); // 3 Netherite Ingots
-        recipe.setIngredient('C', Material.HEAVY_CORE);       // 2 Mace Cores
-        recipe.setIngredient('D', Material.DRAGON_HEAD);     // 2 Dragon Heads
+        recipe.setIngredient('N', Material.NETHERITE_INGOT); 
+        recipe.setIngredient('C', Material.HEAVY_CORE); 
+        recipe.setIngredient('D', Material.DRAGON_HEAD);     
 
         Bukkit.addRecipe(recipe);
     }
