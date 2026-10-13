@@ -24,7 +24,7 @@ public final class powerboundSMP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ArcherPowerListener(this), this);
         Bukkit.getPluginManager().registerEvents(new BeautifulStrangerPowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new CheesecakePowerListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new ChronosPowerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BreweryPowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new ChiwawaPowerListener(this), this);
         Bukkit.getPluginManager().registerEvents(new DashPowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new DreamerPowerListener(), this);
@@ -41,7 +41,6 @@ public final class powerboundSMP extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new MinerPowerListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PhoenixPowerListener(this), this);
         Bukkit.getPluginManager().registerEvents(new RagdollPowerListener(), this);
-        Bukkit.getPluginManager().registerEvents(new ShadowPowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new TankPowerListener(), this);
         Bukkit.getPluginManager().registerEvents(new TelepathyPowerListener(this), this);
         Bukkit.getPluginManager().registerEvents(new TeleportPowerListener(), this);
