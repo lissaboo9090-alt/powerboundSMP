@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -73,7 +75,7 @@ public class VampirePowerListener implements Listener {
             }
 
             if (target != null) {
-                target.damage(4.0, player); 
+                target.damage(1.0, player); 
                 target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 0, false, false, true));
                 
                 double currentHealth = player.getHealth();
@@ -89,5 +91,23 @@ public class VampirePowerListener implements Listener {
         }, 3L);
 
         biteCooldowns.put(player.getUniqueId(), currentTime + COOLDOWN_TIME);
+    }
+
+    @EventHandler
+    public void onVampireMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        if (player.getScoreboardTags().contains("vampire")) {
+            if (!player.hasPotionEffect(PotionEffectType.SPEED)) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false, true));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onVampireJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        if (player.getScoreboardTags().contains("vampire")) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false, true));
+        }
     }
 }
