@@ -14,10 +14,12 @@ import java.util.Random;
 public class JoinMatchCommand implements CommandExecutor {
 
     private final String[] ROLES = {
-        "archer", "beautiful stranger", "cheesecake", "chronos", "chiwawa", "dash", 
+            "archer", "beautiful stranger", "cheesecake" , 
+        " Return by death", "Omnipresence", "Life line" , "Brewery" , " Preiest" ,
+        "Poseidon" , "Guardin angel" , "Ace", "chiwawa", "dash", 
         "dreamer", "fade out", "slime", "frost", "gravity", "light", 
         "lighting", "lock pot", "miner", "phoenix", "ragdoll", "shadow", 
-        "tank", "telepathy", "teleport", "time", "void", "witch", "parrot"
+        "tank", "telepathy", "teleport", "time", "void", "witch", "Parrot"
     };
     
     private final Random random = new Random();
